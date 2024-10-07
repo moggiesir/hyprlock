@@ -116,7 +116,7 @@ protocol("unstable/linux-dmabuf/linux-dmabuf-unstable-v1.xml"
 # Installation
 install(TARGETS hyprlock)
 
-install(FILES ${CMAKE_SOURCE_DIR}/pam/hyprlock
+install(FILES ${CMAKE_SOURCE_DIR}/pam/hyprlock ${CMAKE_SOURCE_DIR}/pam/hyprlock-fingerprint
         DESTINATION ${CMAKE_INSTALL_FULL_SYSCONFDIR}/pam.d)
 
 install(

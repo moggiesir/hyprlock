@@ -2,6 +2,7 @@
 #include "../../helpers/Log.hpp"
 #include "../../core/hyprlock.hpp"
 #include "src/core/Auth.hpp"
+#include "src/core/Fingerprint.hpp"
 #include <chrono>
 #include <unistd.h>
 #include <pwd.h>
@@ -166,6 +167,12 @@ IWidget::SFormatResult IWidget::formatString(std::string in) {
 
     if (in.contains("$LAYOUT")) {
         replaceAllLayout(in);
+        result.allowForceUpdate = true;
+    }
+
+    if (in.contains("$MESSAGE")) {
+        const auto MESSAGE = g_pFingerprint->getLastMessage();
+        replaceAll(in, "$MESSAGE", MESSAGE.has_value() ? MESSAGE.value() : "");
         result.allowForceUpdate = true;
     }
 

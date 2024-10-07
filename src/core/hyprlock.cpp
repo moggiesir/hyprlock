@@ -4,6 +4,7 @@
 #include "../renderer/Renderer.hpp"
 #include "Auth.hpp"
 #include "Egl.hpp"
+#include "Fingerprint.hpp"
 #include "linux-dmabuf-unstable-v1-protocol.h"
 #include <sys/wait.h>
 #include <sys/poll.h>
@@ -417,6 +418,9 @@ void CHyprlock::run() {
     g_pAuth = std::make_unique<CAuth>();
     g_pAuth->start();
 
+    g_pFingerprint = std::make_unique<CFingerprint>();
+    g_pFingerprint->start();
+
     registerSignalAction(SIGUSR1, handleUnlockSignal, SA_RESTART);
     registerSignalAction(SIGUSR2, handleForceUpdateSignal);
     registerSignalAction(SIGRTMIN, handlePollTerminate);
@@ -783,7 +787,7 @@ static const ext_session_lock_v1_listener sessionLockListener = {
 
 void CHyprlock::onPasswordCheckTimer() {
     // check result
-    if (g_pAuth->isAuthenticated()) {
+    if (g_pAuth->isAuthenticated() || g_pFingerprint->isAuthenticated()) {
         unlock();
     } else {
         m_sPasswordState.passBuffer = "";
