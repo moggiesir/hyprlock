@@ -42,8 +42,8 @@ class CFingerprint {
     void                               inhibitSleep();
 
     bool                               createDeviceProxy();
-    bool                               claimDevice();
-    bool                               startVerify(bool updateMessage = true);
+    void                               claimDevice();
+    void                               startVerify(bool isRetry = false);
     bool                               stopVerify();
     bool                               releaseDevice();
 };
